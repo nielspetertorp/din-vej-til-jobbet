@@ -1,0 +1,5 @@
+import { Link, useNavigate } from 'react-router-dom';
+import { questions } from '../data/questions';
+import type { GuideAnswerMap } from '../utils/scoring';
+import { useState } from 'react';
+export const GuidePage=({answers,setAnswers}:{answers:GuideAnswerMap;setAnswers:(a:GuideAnswerMap)=>void})=>{const [i,setI]=useState(0);const q=questions[i];const nav=useNavigate();return <section className='container'><h1>Find din mest oplagte vej</h1><p>Spørgsmål {i+1} af {questions.length}</p><div className='progress'><span style={{width:`${((i+1)/questions.length)*100}%`}}/></div><article className='qCard'><h2>{q.q}</h2><div className='answers'>{q.options.map(o=><button key={o} className={answers[q.id]===o?'ans active':'ans'} onClick={()=>setAnswers({...answers,[q.id]:o)}>{o}</button>)}</div></article><div className='btnRow'><button className='btn ghost' disabled={i===0} onClick={()=>setI(i-1)}>Tilbage</button>{i<questions.length-1?<button className='btn' onClick={()=>setI(i+1)}>Næste</button>:<button className='btn' onClick={()=>nav('/result')}>Se resultat</button>}<Link className='btn ghost' to='/'>Til kortet</Link></div></section>}
