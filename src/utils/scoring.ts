@@ -17,8 +17,13 @@ export function computeResult(answers: GuideAnswerMap){
     if(id==='q12'){if(val.includes('søge'))scoreA+=2; if(val.includes('styrke')||val.includes('erfaring'))scoreB+=2; if(val.includes('uddannelse'))scoreC+=2; if(val.includes('afklare'))scoreAfklaring+=2;}
   }
   Object.entries(answers).forEach(([id,val])=>add(id,val));
-  const top=[['A',scoreA],['B',scoreB],['C',scoreC]] as const;
-  top.sort((a,b)=>b[1]-a[1]);
+  const top: Array<[ResultKey, number]> = [
+  ['A', scoreA],
+  ['B', scoreB],
+  ['C', scoreC],
+];
+
+top.sort((a, b) => b[1] - a[1]);
   let key:ResultKey=top[0][0] as ResultKey;
   if(scoreAfklaring>=4 && ['Lidt uklart','Meget uklart'].includes(answers.q2||'')) key='Afklaring';
   else if(Math.abs(scoreA-scoreB)<=2 && scoreA>=scoreC && scoreB>=scoreC) key='A+B';
